@@ -2,113 +2,24 @@
 <head>
 <title>Lista de e-mails</title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+
 <link rel="stylesheet" type="text/css"
 	href="lib/bootstrap/bootstrap.min.css">
-<style>
-.jumbotron {
-	width: 500px;
-	text-align: center;
-	margin-top: 20px;
-	margin-left: auto;
-	margin-right: auto;
-}
+<link rel="stylesheet" type="text/css" href="css/app.css">
 
-.table {
-	margin-top: 20px;
-}
-
-.form-control {
-	margin-bottom: 5px;
-}
-
-.nao_lido {
-	background-color: yellow;
-}
-
-.selecionado {
-	background-color: green;
-}
-
-.negrito {
-	font-weight: bold;
-}
-</style>
 <script src="lib/angular/angular.min.js"></script>
 <script src="lib/angular/angular-locale_pt-br.js"></script>
 <script src="lib/angular/angular-messages.min.js"></script>
-<script>
-	angular.module("desafioIderos", [ "ngMessages" ]);
-	angular
-			.module("desafioIderos")
-			.controller(
-					"desafioIderosCtrl",
-					function($scope, $http) {
-						$scope.app = "Lista de e-mails";
-						$scope.emails = [];
-						var carregarEmails = function() {
-							$http
-									.get(
-											"http://localhost:8080/desafio_ideros/rest/email")
-									.success(function(data) {
-										$scope.emails = data;
-									})
-									.error(
-											function(data, status) {
-												$scope.message = "Aconteceu um problema: "
-														+ data;
-											});
-						};
-
-						$scope.adicionarEmail = function(email) {
-							email.datetime = new Date();
-							$http.post("http://localhost:8080/desafio_ideros/rest/email", email).success(function(data) {
-								delete $scope.email;
-								$scope.emailForm.$setPristine();
-								carregarEmails();
-							}).error(function(data, status) {
-								$scope.message = "Aconteceu um problema: " + data;
-							});
-						};
-
-						$scope.apagarEmails = function(emails) {
-							var ids = [];
-							var count = 0;
-							emails.filter(function(email) {
-								if (email.selecionado)
-									ids[count++]=email.id;
-							});
-							
-							$http.delete("http://localhost:8080/desafio_ideros/rest/email/ids/"+ids).success(function(data) {
-								carregarEmails();
-							}).error(function(data, status) {
-								$scope.message = "Aconteceu um problema: " + data;
-							});
-						};
-						
-						$scope.isEmailsSelecionados = function(emails) {
-							if(emails.length===0)
-								return false;
-							//retorna verdade se algum email for selecionado
-							return emails.some(function(email) {
-								return email.selecionado;
-							});
-						};
-
-						$scope.ordernarPor = function(campo) {
-							$scope.criterioDeOrdenacao = campo;
-							$scope.direcaoDaOrdenacao = !$scope.direcaoDaOrdenacao;
-						};
-
-						carregarEmails();
-					});
-</script>
+<script src="js/app.js"></script>
+<script src="js/controllers/desafioIderosCtrl.js"></script>
 </head>
 <body ng-controller="desafioIderosCtrl">
 	<div class="jumbotron">
 		<h4>{{app}}</h4>
 		<div class="alert alert-danger" ng-show="message">{{message}}</div>
 		<input class="form-control" type="text" ng-model="criterioDeBusca"
-			placeholder="Qual e-mail voce esta buscando?" ng-hide="message || emails.length===0" />
+			placeholder="Qual e-mail voce esta buscando?"
+			ng-hide="message || emails.length===0" />
 		<table class="table" ng-if="emails.length>0">
 			<tr>
 				<th></th>
@@ -116,34 +27,53 @@
 				<th><a href="#" ng-click="ordernarPor('subject')">Assunto</a></th>
 				<th><a href="#" ng-click="ordernarPor('datetime')">Envio</a></th>
 			</tr>
-			<tr ng-class="{'nao_lido negrito': email.unread,'selecionado': email.selecionado}"
+			<tr
+				ng-class="{'nao_lido negrito': email.unread,'selecionado': email.selecionado}"
 				ng-repeat="email in emails | filter:{from: criterioDeBusca} | orderBy:criterioDeOrdenacao:direcaoDaOrdenacao">
-				<td><input type="checkbox" ng-model="email.selecionado"/></td>
+				<td><input type="checkbox" ng-model="email.selecionado" /></td>
 				<td>{{email.from}}</td>
 				<td>{{email.subject}}</td>
 				<td>{{email.datetime | date}}</td>
 			</tr>
 		</table>
 		<form name="emailForm">
-			<input class="form-control" type="text" name="de" ng-model="email.from" placeholder="De" ng-required="true" ng-minlength="3"/>
-			<input class="form-control" type="text" name="assunto" ng-model="email.subject" placeholder="Assunto" ng-required="true" ng-minlength="10"/>
-			<textarea class="form-control" name="mensagem" ng-model="email.message" ng-required="true" ng-minlength="20"></textarea>
+			<input class="form-control" type="text" name="de"
+				ng-model="email.from" placeholder="De" ng-required="true"
+				ng-minlength="3" /> <input class="form-control" type="text"
+				name="assunto" ng-model="email.subject" placeholder="Assunto"
+				ng-required="true" ng-minlength="10" />
+			<textarea class="form-control" name="mensagem"
+				ng-model="email.message" ng-required="true" ng-minlength="20"></textarea>
 		</form>
-		<div ng-messages="emailForm.de.$error" ng-show="emailForm.de.$invalid && emailForm.de.$dirty" class="alert alert-danger">
+		<div ng-messages="emailForm.de.$error"
+			ng-show="emailForm.de.$invalid && emailForm.de.$dirty"
+			class="alert alert-danger">
 			<span ng-message="required">Por favor, preencha o campo "de"!</span>
-			<span ng-message="minlength">O campo "de" deve ter no minimo 3 caracteres.</span>
+			<span ng-message="minlength">O campo "de" deve ter no minimo 3
+				caracteres.</span>
 		</div>
-		<div ng-messages="emailForm.assunto.$error" ng-show="emailForm.assunto.$invalid && emailForm.assunto.$dirty" class="alert alert-danger">
-			<span ng-message="required">Por favor, preencha o campo "assunto"!</span>
-			<span ng-message="minlength">O campo "assunto" deve ter no minimo 10 caracteres.</span>
+		<div ng-messages="emailForm.assunto.$error"
+			ng-show="emailForm.assunto.$invalid && emailForm.assunto.$dirty"
+			class="alert alert-danger">
+			<span ng-message="required">Por favor, preencha o campo
+				"assunto"!</span> <span ng-message="minlength">O campo "assunto"
+				deve ter no minimo 10 caracteres.</span>
 		</div>
-		<div ng-messages="emailForm.mensagem.$error" ng-show="emailForm.mensagem.$invalid && emailForm.mensagem.$dirty" class="alert alert-danger">
-			<span ng-message="required">Por favor, preencha o campo "mensagem"!</span>
-			<span ng-message="minlength">O campo "mensagem" deve ter no minimo 20 caracteres.</span>
+		<div ng-messages="emailForm.mensagem.$error"
+			ng-show="emailForm.mensagem.$invalid && emailForm.mensagem.$dirty"
+			class="alert alert-danger">
+			<span ng-message="required">Por favor, preencha o campo
+				"mensagem"!</span> <span ng-message="minlength">O campo "mensagem"
+				deve ter no minimo 20 caracteres.</span>
 		</div>
-		
-		<button class="btn btn-primary btn-block" ng-click="adicionarEmail(email)" ng-disabled="emailForm.$invalid">Adicionar E-mail</button>
-		<button class="btn btn-danger btn-block" ng-click="apagarEmails(emails)" ng-hide="!isEmailsSelecionados(emails)">Apagar E-mail(s)</button>
+
+		<button class="btn btn-primary btn-block"
+			ng-click="adicionarEmail(email)" ng-disabled="emailForm.$invalid">Adicionar
+			E-mail</button>
+		<button class="btn btn-danger btn-block"
+			ng-click="apagarEmails(emails)"
+			ng-hide="!isEmailsSelecionados(emails)">Apagar E-mail(s)</button>
 	</div>
+	<div ng-include="'view/footer.html'"></div>
 </body>
 </html>
