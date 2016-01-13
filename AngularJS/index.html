@@ -1,0 +1,30 @@
+<html ng-app="desafioIderos">
+<head>
+<title>Desafio IDEROS [Desenvolvedor Java Web]</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+<link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.min.css">
+<style>
+.jumbotron{
+	width:500px;
+	text-align:center;
+	margin-top:20px;
+	margin-left:auto;
+	margin-right:auto;
+}
+</style>
+<script src="lib/angular/angular.min.js"></script>
+<script src="lib/angular/angular-locale_pt-br.js"></script>
+<script src="lib/angular/angular-messages.min.js"></script>
+<script>
+angular.module("desafioIderos", ["ngMessages"]);	
+angular.module("desafioIderos").controller("desafioIderosCtrl", function($scope){
+	$scope.app="Desafio IDEROS";
+});	
+</script>
+</head>
+<body ng-controller="desafioIderosCtrl">
+	<div class="jumbotron">
+		<h4>{{app}}</h4>
+	</div>
+</body>
+</html>
