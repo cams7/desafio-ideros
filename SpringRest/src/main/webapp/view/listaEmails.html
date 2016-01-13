@@ -1,0 +1,26 @@
+<div class="jumbotron">
+	<input class="form-control" type="text" ng-model="criterioDeBusca"
+		placeholder="Qual e-mail voce esta buscando?"
+		ng-hide="message || emails.length===0" />
+	<table class="table" ng-if="emails.length>0">
+		<tr>
+			<th></th>
+			<th><a href="javascript:void(0);" ng-click="ordernarPor('from')">De</a></th>
+			<th><a href="javascript:void(0);" ng-click="ordernarPor('subject')">Assunto</a></th>
+			<th><a href="javascript:void(0);" ng-click="ordernarPor('datetime')">Envio</a></th>
+		</tr>
+		<tr
+			ng-class="{'nao_lido negrito': email.unread,'selecionado': email.selecionado}"
+			ng-repeat="email in emails | filter:{from: criterioDeBusca} | orderBy:criterioDeOrdenacao:direcaoDaOrdenacao">
+			<td><input type="checkbox" ng-model="email.selecionado" /></td>
+			<td><a href="#/detalhesEmail/{{email.id}}">{{email.from}}</a></td>
+			<td>{{email.subject}}</td>
+			<td>{{email.datetime | date}}</td>
+		</tr>
+	</table>
+
+	<a class="btn btn-primary btn-block" href="#/novoEmail">Novo E-mail</a>
+	<button class="btn btn-danger btn-block"
+		ng-click="apagarEmails(emails)"
+		ng-hide="!isEmailsSelecionados(emails)">Apagar E-mail(s)</button>
+</div>

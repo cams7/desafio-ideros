@@ -1,0 +1,21 @@
+<div class="jumbotron">
+	<table class="table table-user-information">
+		<tbody>
+			<tr>
+				<td>De:</td>
+				<td>{{email.from}}</td>
+			</tr>
+			<tr>
+				<td>Assunto:</td>
+				<td>{{email.subject}}</td>
+			</tr>
+
+			<tr>
+				<td>Mensagem:</td>
+				<td
+					style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{email.message}}</td>
+			</tr>
+		</tbody>
+	</table>
+	<a class="btn btn-default btn-block" href="#/listaEmails">Voltar</a>
+</div>

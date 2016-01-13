@@ -178,7 +178,7 @@
 				<configuration>
 					<path>/desafio_ideros</path>
 					<update>true</update>
-					<url>http://localhost:8080/manager/text</url>
+					<url>http://localhost:8181/manager/text</url>
 					<username>tomcat</username>
 					<password>tomcat</password>
 				</configuration>

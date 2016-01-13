@@ -1,1 +1,1 @@
-angular.module("desafioIderos", [ "ngMessages" ]);
+angular.module("desafioIderos", [ "ngMessages" , "ngRoute"]);

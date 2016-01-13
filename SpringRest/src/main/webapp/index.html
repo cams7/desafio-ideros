@@ -11,77 +11,24 @@
 <script src="lib/angular/angular.min.js"></script>
 <script src="lib/angular/angular-locale_pt-br.js"></script>
 <script src="lib/angular/angular-messages.min.js"></script>
+<script src="lib/angular/angular-route.min.js"></script>
 
 <script src="js/app.js"></script>
-<script src="js/controllers/desafioIderosCtrl.js"></script>
+<script src="js/controllers/listaEmailsCtrl.js"></script>
+<script src="js/controllers/detalhesEmailCtrl.js"></script>
+<script src="js/controllers/novoEmailCtrl.js"></script>
+
+<script src="js/config/routeConfig.js"></script>
 <script src="js/value/configValue.js"></script>
 <script src="js/services/emailAPIService.js"></script>
 <script src="js/directives/uiAlertDirective.js"></script>
 
 </head>
-<body ng-controller="desafioIderosCtrl">
-	<div class="jumbotron">
-		<h4>{{app}}</h4>
-		
-		<ui-alert title="Ops, aconteceu um problema!" ng-show="message">{{message}}</ui-alert>
-		
-		<input class="form-control" type="text" ng-model="criterioDeBusca"
-			placeholder="Qual e-mail voce esta buscando?"
-			ng-hide="message || emails.length===0" />
-		<table class="table" ng-if="emails.length>0">
-			<tr>
-				<th></th>
-				<th><a href="#" ng-click="ordernarPor('from')">De</a></th>
-				<th><a href="#" ng-click="ordernarPor('subject')">Assunto</a></th>
-				<th><a href="#" ng-click="ordernarPor('datetime')">Envio</a></th>
-			</tr>
-			<tr
-				ng-class="{'nao_lido negrito': email.unread,'selecionado': email.selecionado}"
-				ng-repeat="email in emails | filter:{from: criterioDeBusca} | orderBy:criterioDeOrdenacao:direcaoDaOrdenacao">
-				<td><input type="checkbox" ng-model="email.selecionado" /></td>
-				<td>{{email.from}}</td>
-				<td>{{email.subject}}</td>
-				<td>{{email.datetime | date}}</td>
-			</tr>
-		</table>
-		<form name="emailForm">
-			<input class="form-control" type="text" name="de"
-				ng-model="email.from" placeholder="De" ng-required="true"
-				ng-minlength="3" /> <input class="form-control" type="text"
-				name="assunto" ng-model="email.subject" placeholder="Assunto"
-				ng-required="true" ng-minlength="10" />
-			<textarea class="form-control" name="mensagem"
-				ng-model="email.message" ng-required="true" ng-minlength="20"></textarea>
-		</form>
-		<div ng-messages="emailForm.de.$error"
-			ng-show="emailForm.de.$invalid && emailForm.de.$dirty"
-			class="alert alert-danger">
-			<span ng-message="required">Por favor, preencha o campo "de"!</span>
-			<span ng-message="minlength">O campo "de" deve ter no minimo 3
-				caracteres.</span>
-		</div>
-		<div ng-messages="emailForm.assunto.$error"
-			ng-show="emailForm.assunto.$invalid && emailForm.assunto.$dirty"
-			class="alert alert-danger">
-			<span ng-message="required">Por favor, preencha o campo
-				"assunto"!</span> <span ng-message="minlength">O campo "assunto"
-				deve ter no minimo 10 caracteres.</span>
-		</div>
-		<div ng-messages="emailForm.mensagem.$error"
-			ng-show="emailForm.mensagem.$invalid && emailForm.mensagem.$dirty"
-			class="alert alert-danger">
-			<span ng-message="required">Por favor, preencha o campo
-				"mensagem"!</span> <span ng-message="minlength">O campo "mensagem"
-				deve ter no minimo 20 caracteres.</span>
-		</div>
+<body>
+	<ui-alert class="jumbotron" title="Ops, aconteceu um problema!"
+		ng-show="message">{{message}}</ui-alert>
 
-		<button class="btn btn-primary btn-block"
-			ng-click="adicionarEmail(email)" ng-disabled="emailForm.$invalid">Adicionar
-			E-mail</button>
-		<button class="btn btn-danger btn-block"
-			ng-click="apagarEmails(emails)"
-			ng-hide="!isEmailsSelecionados(emails)">Apagar E-mail(s)</button>
-	</div>
+	<div ng-view></div>
 	<div ng-include="'view/footer.html'"></div>
 </body>
 </html>
