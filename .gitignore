@@ -1,8 +1,15 @@
+#git rm --cached .classpath
+#git rm -r --cached .settings
+
 #Linux
 *~
 
 #Windows
 Thumbs.db
+
+# Maven
+log/
+target/
 
 *.class
 
