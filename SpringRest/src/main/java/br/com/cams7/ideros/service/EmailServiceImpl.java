@@ -35,7 +35,7 @@ public class EmailServiceImpl implements EmailService {
 	@Transactional
 	@Override
 	public void salvar(EmailEntity email) {
-		getRepository().salvar(email);
+		repository.salvar(email);
 	}
 
 	/*
@@ -47,19 +47,7 @@ public class EmailServiceImpl implements EmailService {
 	@Transactional
 	@Override
 	public void atualizar(EmailEntity email) {
-		getRepository().atualizar(email);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * br.com.cams7.ideros.EmailEndPoint#remover(br.com.cams7.ideros.EmailBO)
-	 */
-	@Transactional
-	@Override
-	public void remover(EmailEntity email) {
-		getRepository().remover(email);
+		repository.atualizar(email);
 	}
 
 	/*
@@ -70,7 +58,13 @@ public class EmailServiceImpl implements EmailService {
 	@Transactional
 	@Override
 	public void remover(Long id) {
-		getRepository().remover(id);
+		repository.remover(id);
+	}
+	
+	@Transactional
+	@Override
+	public void remover(List<Long> ids) {
+		repository.remover(ids);		
 	}
 
 	/*
@@ -81,17 +75,15 @@ public class EmailServiceImpl implements EmailService {
 	@Transactional(readOnly = true)
 	@Override
 	public List<EmailEntity> buscarTodos() {
-		return getRepository().buscarTodos();
+		return repository.buscarTodos();
 	}
 
 	@Transactional(readOnly = true)
 	@Override
 	public EmailEntity buscarPorId(Long id) {
-		return getRepository().buscarPorId(id);
+		return repository.buscarPorId(id);
 	}
 
-	private EmailRepository getRepository() {
-		return repository;
-	}
+	
 
 }

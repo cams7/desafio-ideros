@@ -51,8 +51,7 @@ public class EmailRepositoryImpl implements EmailRepository {
 	 * 
 	 * @see br.com.cams7.ideros.EmailDAO#remover(br.com.cams7.ideros.EmailBO)
 	 */
-	@Override
-	public void remover(EmailEntity email) {
+	private void remover(EmailEntity email) {
 		getCurrentSession().delete(email);
 	}
 
@@ -67,6 +66,12 @@ public class EmailRepositoryImpl implements EmailRepository {
 		if (email != null)
 			remover(email);
 
+	}
+
+	@Override
+	public void remover(List<Long> ids) {
+		for (Long id : ids)
+			remover(id);
 	}
 
 	/*
@@ -84,7 +89,8 @@ public class EmailRepositoryImpl implements EmailRepository {
 	@Override
 	public EmailEntity buscarPorId(Long id) {
 		EmailEntity email = (EmailEntity) getCurrentSession().get(EmailEntity.class, id);
-//		EmailBO email = (EmailBO) getCurrentSession().load(EmailBO.class, id);
+		// EmailBO email = (EmailBO) getCurrentSession().load(EmailBO.class,
+		// id);
 		return email;
 	}
 

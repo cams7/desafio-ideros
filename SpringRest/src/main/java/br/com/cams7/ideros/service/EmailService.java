@@ -16,11 +16,11 @@ public interface EmailService {
 
 	void atualizar(EmailEntity email);
 
-	void remover(EmailEntity email);
-
 	void remover(Long id);
 
+	void remover(List<Long> ids);
+
 	List<EmailEntity> buscarTodos();
-	
+
 	EmailEntity buscarPorId(Long id);
 }

@@ -72,7 +72,7 @@ public class EmailController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> cadastrarEmail(@RequestBody EmailEntity email, UriComponentsBuilder ucBuilder) {
+	public ResponseEntity<Void> adicionarEmail(@RequestBody EmailEntity email, UriComponentsBuilder ucBuilder) {
 
 		// if (service.isUserExist(user))
 		// return new ResponseEntity<Void>(HttpStatus.CONFLICT);
@@ -118,12 +118,20 @@ public class EmailController {
 	 * @return
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<EmailEntity> excluirEmail(@PathVariable("id") Long id) {
+	public ResponseEntity<EmailEntity> apagarEmail(@PathVariable("id") Long id) {
 		EmailEntity user = service.buscarPorId(id);
 		if (user == null)
 			return new ResponseEntity<EmailEntity>(HttpStatus.NOT_FOUND);
 
 		service.remover(id);
+		return new ResponseEntity<EmailEntity>(HttpStatus.NO_CONTENT);
+	}
+
+	@RequestMapping(value = "/ids/{ids}", method = RequestMethod.DELETE)
+	public ResponseEntity<EmailEntity> apagarEmails(@PathVariable("ids") List<Long> ids) {
+
+		service.remover(ids);
+
 		return new ResponseEntity<EmailEntity>(HttpStatus.NO_CONTENT);
 	}
 
