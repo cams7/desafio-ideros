@@ -6,6 +6,7 @@
 <link rel="stylesheet" type="text/css"
 	href="lib/bootstrap/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="css/app.css">
+<link rel="stylesheet" type="text/css" href="css/ui.css">
 
 <script src="lib/angular/angular.min.js"></script>
 <script src="lib/angular/angular-locale_pt-br.js"></script>
@@ -15,12 +16,15 @@
 <script src="js/controllers/desafioIderosCtrl.js"></script>
 <script src="js/value/configValue.js"></script>
 <script src="js/services/emailAPIService.js"></script>
+<script src="js/directives/uiAlertDirective.js"></script>
 
 </head>
 <body ng-controller="desafioIderosCtrl">
 	<div class="jumbotron">
 		<h4>{{app}}</h4>
-		<div class="alert alert-danger" ng-show="message">{{message}}</div>
+		
+		<ui-alert title="Ops, aconteceu um problema!" ng-show="message">{{message}}</ui-alert>
+		
 		<input class="form-control" type="text" ng-model="criterioDeBusca"
 			placeholder="Qual e-mail voce esta buscando?"
 			ng-hide="message || emails.length===0" />
