@@ -1,6 +1,6 @@
 <html ng-app="desafioIderos">
 <head>
-<title>Desafio IDEROS [Desenvolvedor Java Web]</title>
+<title>Lista de e-mails</title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
 <link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.min.css">
 <style>
@@ -11,20 +11,60 @@
 	margin-left:auto;
 	margin-right:auto;
 }
+.table{
+	margin-top:20px;
+}
+.form-control{
+	margin-bottom:5px;
+}
+.selecionado{
+	background-color:yellow;
+}
+.negrito{
+	font-weight:bold;
+}
 </style>
 <script src="lib/angular/angular.min.js"></script>
 <script src="lib/angular/angular-locale_pt-br.js"></script>
-<script src="lib/angular/angular-messages.min.js"></script>
 <script>
-angular.module("desafioIderos", ["ngMessages"]);	
-angular.module("desafioIderos").controller("desafioIderosCtrl", function($scope){
-	$scope.app="Desafio IDEROS";
+angular.module("desafioIderos", []);	
+angular.module("desafioIderos").controller("desafioIderosCtrl", function($scope, $http){
+	$scope.app="Lista de e-mails";
+	$scope.emails = [];
+	var carregarEmails = function () {
+		$http.get("https://s3.amazonaws.com/codecademy-content/courses/ltp4/emails-api/emails.json").success(function (data) {
+			$scope.emails = data;
+		}).error(function (data, status) {
+			$scope.message = "Aconteceu um problema: " + data;
+		});
+	};
+
+	$scope.ordernarPor=function(campo){
+		$scope.criterioDeOrdenacao=campo;
+		$scope.direcaoDaOrdenacao=!$scope.direcaoDaOrdenacao;
+	};
+
+	carregarEmails();
 });	
 </script>
 </head>
 <body ng-controller="desafioIderosCtrl">
 	<div class="jumbotron">
 		<h4>{{app}}</h4>
+		<div class="alert alert-danger" ng-show="message">{{message}}</div>
+		<input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="Qual e-mail voce esta buscando?" ng-hide="message"/>
+		<table class="table" ng-if="emails.length>0">
+			<tr>
+				<th><a href="#" ng-click="ordernarPor('from')">De</a></th>	
+				<th><a href="#" ng-click="ordernarPor('subject')">Assunto</a></th>
+				<th><a href="#" ng-click="ordernarPor('datetime')">Envio</a></th>
+			</tr>
+			<tr ng-class="{'selecionado negrito': email.unread}" ng-repeat="email in emails | filter:{from: criterioDeBusca} | orderBy:criterioDeOrdenacao:direcaoDaOrdenacao">
+				<td>{{email.from}}</td>
+				<td>{{email.subject}}</td>
+				<td>{{email.datetime | date}}</td>
+			</tr>
+		</table>
 	</div>
 </body>
 </html>
