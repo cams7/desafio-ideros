@@ -13,7 +13,7 @@ Desafio ÍDEROS [Desenvolvedor Java Web]
 
 # Executar o segundo desafio
 - Baixe o Tomcat7, caso ainda não o tenha baixado.
-- Inclua o usuario e senha "tomcat" no servidor Tomcat7. Para isso, inclua a tag "<user username="tomcat" password="tomcat" roles="manager-script"/>" dentro da tag "<tomcat-users>" no arquivo 'tomcat-users.xml'.
+- Inclua o usuario e senha "tomcat" no servidor Tomcat7. Para isso, inclua a tag "\<user username="tomcat" password="tomcat" roles="manager-script"/\>" dentro da tag "\<tomcat-users\>" no arquivo 'tomcat-users.xml'.
 - Inicialize o Tomcat7.
 - Instale o Maven, caso ainda não o tenha baixado.
 - Atraves do comando "cd ../SpringRest", no CONSOLE do Linux ou no CMD do Windows entre no diretorio 'SpringRest'.
